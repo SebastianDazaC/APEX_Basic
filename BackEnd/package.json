@@ -1,0 +1,13 @@
+{
+  "name": "apex_basic_backend",
+  "version": "1.0.0",
+  "description": "Backend básico para sincronizar la hora en APEX_Basic",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
