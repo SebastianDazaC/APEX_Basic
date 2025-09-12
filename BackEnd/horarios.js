@@ -13,12 +13,12 @@ function parseHorarios() {
     let currentHorario = null;
     const lines = content.split('\n');
     for (let line of lines) {
-        line = line.trim();
-        if (line.startsWith('## ')) {
-            currentHorario = line.replace('## ', '').trim();
+        let lin = line.trim();
+        if (lin.startsWith('## ')) {
+            currentHorario = lin.replace('## ', '').trim();
             horarios[currentHorario] = [];
-        } else if (currentHorario && line.startsWith('-')) {
-            const match = line.match(/-\s*(.+?):\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+        } else if (currentHorario && lin.startsWith('-')) {
+            const match = lin.match(/-\s*(.+?):\s*(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
             if (match) {
                 horarios[currentHorario].push({
                     nombre: match[1],
@@ -27,7 +27,7 @@ function parseHorarios() {
                 });
             } else {
                 // Para bloques sin hora (ej: Final de Jornada)
-                const nombre = line.replace('- ', '').replace(':', '').trim();
+                const nombre = lin.replace('- ', '').replace(':', '').trim();
                 horarios[currentHorario].push({ nombre });
             }
         }
@@ -67,9 +67,9 @@ function detectarHorario(horaActual) {
                 }
             }
         }
-        if (mejorHorario) break;
+        // if (mejorHorario) break;
     }
-    return mejorHorario;
+    return horarios;
 }
 
 module.exports = {

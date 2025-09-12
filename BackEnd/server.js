@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const horarios = require('./horarios');
+const horarios = require('../BackEnd/horarios.js');
 
 app.use(cors('https://apex-basic.netlify.app/'));
 app.use(express.json());
@@ -45,10 +45,22 @@ app.get('/api/horario', (req, res) => {
   const now = getCurrentTime();
   const horaActual = now.toTimeString().slice(0,5); // "HH:mm"
   let horario = manualHorario;
-  if (!horario) {
+  if (horario === null) {
     horario = horarios.detectarHorario(horaActual);
   }
-  res.json({ horario });
+
+  for(let h in horario){
+    for(let b of horario[h]){
+      const inicio = b.inicio;
+      const fin = b.fin;
+      if(inicio && fin && horaActual >= inicio && horaActual < fin){
+        horario = h;
+        res.json({ horario : "Estamos en el bloque que corresponde entre " + inicio + " y " + fin , horaActual });
+        return;
+      }
+    }
+  }
+  res.json({ horario, horaActual });
 });
 
 // API: Cambiar el horario manualmente (solo coordinadora)
@@ -82,7 +94,7 @@ app.get('/api/horarios', (req, res) => {
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
-    console.log(`Servidor backend de APEX_Basic escuchando en puerto ${PORT}`);
+    console.log(`Servidor backend de APEX_Basic escuchando en puerto http://localhost:${PORT}`);
   });
 }
 

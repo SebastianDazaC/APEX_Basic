@@ -28,24 +28,24 @@ Ejemplo de formato:
 - Final de Jornada (f)
 
 ## Tarde Normal
-- Bloque 1: 1:00 - 1:45
-- Bloque 2: 1:45 - 2:30
-- Bloque 3: 2:30 - 3:15
-- Descanso (d): 3:15 - 3:45
-- Bloque 4: 3:45 - 4:30
-- Bloque 5: 4:30 - 5:15
-- Bloque 6: 5:15 - 6:00
+- Bloque 1: 13:00 - 13:45
+- Bloque 2: 13:45 - 14:30
+- Bloque 3: 14:30 - 15:15
+- Descanso (d): 15:15 - 15:45
+- Bloque 4: 15:45 - 16:30
+- Bloque 5: 16:30 - 17:15
+- Bloque 6: 17:15 - 18:00
 - Final de Jornada (f)
 
 ## Tarde Especial
-- Bloque 1: 1:00 - 1:40
-- Bloque 2: 1:40 - 2:20
-- Bloque 3: 2:20 - 3:00
-- Descanso (d): 3:00 - 3:30
-- Bloque 4: 3:30 - 4:10
-- Bloque 5: 4:10 - 4:50
-- Bloque 6: 4:50 - 5:25
-- Direccion de Grupo (A): 5:25 - 6:00
+- Bloque 1: 13:00 - 13:40
+- Bloque 2: 13:40 - 14:20
+- Bloque 3: 14:20 - 15:00
+- Descanso (d): 15:00 - 15:30
+- Bloque 4: 15:30 - 16:10
+- Bloque 5: 16:10 - 16:50
+- Bloque 6: 18:50 - 19:25
+- Direccion de Grupo (A): 17:25 - 18:00
 - Final de Jornada (f)
 
 Puedes agregar los bloques, descanso (d), final (f) y animación (A) según corresponda.
