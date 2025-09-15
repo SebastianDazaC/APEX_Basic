@@ -17,7 +17,7 @@ export function Card() {
         const fetchHorario = async () => {
             try {
                 setLoading(true);
-                const res = await fetch("http://localhost:3000/horario", {   
+                const res = await fetch("http://localhost:3000/horario", {
                     method: "GET",
                     credentials: "include"
                 });
