@@ -10,7 +10,7 @@ export async function getHorarioBloques() {
             second: "2-digit"
         })
 
-        const query = 'SELECT b.*, h.nombre AS nombre_horario FROM bloque b JOIN horario h ON b.fk_horario_bloque = h.id_horario WHERE ? BETWEEN b.hora_inicio AND b.hora_final AND h.estado = 1';
+        const query = 'SELECT b.*, h.nombre AS nombre_horario FROM bloque b JOIN horario h ON b.fk_horario_bloque = h.id_horario WHERE "08:00" BETWEEN b.hora_inicio AND b.hora_final AND h.estado = 1';
 
         const [rows] = await db.query(query, [hora]);
         console.log(rows)
