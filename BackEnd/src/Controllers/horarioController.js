@@ -1,4 +1,4 @@
-import { getHorarioBloques } from '../Models/horario_bloque.js';
+import { getHorarioBloques, updateHorarioBloque } from '../Models/horario_bloque.js';
 
 async function detectarHorario(req, res) {
     try {
@@ -13,6 +13,19 @@ async function detectarHorario(req, res) {
     }
 }
 
-export default detectarHorario;
+async function cambiarHorario(req, res) {
+    try {
+        const result = await updateHorarioBloque();
+        if(result.affectedRows === 0) {
+            return res.status(404).json({ message: 'No se encontró ningún horario para actualizar' });
+        }
+        res.status(200).json({ message: 'Horario actualizado correctamente' });
+
+    } catch (error) {
+        res.status(400).json({ message: 'Error al cambiar horario', error: error.message });
+    }
+}
+
+export { detectarHorario, cambiarHorario };
 
 

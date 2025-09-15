@@ -14,10 +14,24 @@ app.use(router);
 
 const PORT = process.env.PORT || 3000;
 
-db.getConnection((err, connection) => {});
-
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });
+
+// ---------- Cierre limpio del pool ----------
+async function closePoolAndExit(signal) {
+  console.log(`🛑 Señal ${signal} recibida. Cerrando servidor...`);
+  try {
+    await db.end();
+    console.log('✅ Pool de conexiones cerrado correctamente');
+  } catch (err) {
+    console.error('⚠️ Error al cerrar el pool:', err);
+  } finally {
+    process.exit(0);
+  }
+}
+
+process.on('SIGINT', () => closePoolAndExit('SIGINT'));
+process.on('SIGTERM', () => closePoolAndExit('SIGTERM'));
 
 export default app;
