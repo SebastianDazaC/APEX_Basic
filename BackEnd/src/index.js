@@ -2,7 +2,7 @@ import express from 'express';
 import db from './config/db.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { router } from './routes/horarioRoutes.js';
+import { router } from './routes/ScheduleRoutes.js';
 
 dotenv.config();
 
