@@ -14,6 +14,9 @@ export function Card() {
     const [loading, setLoading] = useState(true);
     const [selectedSchedule, setSelectedSchedule] = useState("Normal");
     const [currentTime, setCurrentTime] = useState("");
+    const [showAdminOptions, setShowAdminOptions] = useState(false);
+    const [password, setPassword] = useState("");
+    const [adminError, setAdminError] = useState("");
 
     const fetchSchedule = async () => {
         try {
@@ -28,37 +31,7 @@ export function Card() {
         }
     };
 
-    useEffect(() => {
-        const fetchSchedule = async () => {
-            try {
-                setLoading(true);
-                const res = await fetch("http://localhost:3000/schedule", {
-                    method: "GET",
-                    credentials: "include"
-                });
-                
-                if (res.ok) {
-                    const data = await res.json();
-                    console.log("Schedules displayed correctly", data);
-                    setSchedule(data.scheduleBlocks || []);
-                    setError("");
-                } else {
-                    console.log("Schedules have an error");
-                    setError("Error loading schedules");
-                    setSchedule([]);
-                }
-            } catch (error) {
-                console.error("Error en la conexión:", error);
-                setError("Error en la conexión");
-                setSchedule([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSchedule();
-    }, []);
-
+    useEffect(() => { fetchSchedule(); }, []);
     useEffect(() => {
         const timer = setInterval(() => {
             const now = new Date();
@@ -78,10 +51,23 @@ export function Card() {
         setSelectedSchedule(newSchedule);
     };
 
+    const handlePasswordSubmit = () => {
+        // La contraseña se debería manejar de una forma más segura, como una variable de entorno.
+        // Por ahora, la quemamos aquí para el ejemplo.
+        if (password === "tu_contraseña_secreta") {
+            setShowAdminOptions(true);
+            setAdminError("");
+        } else {
+            setAdminError("Contraseña incorrecta");
+        }
+    };
+
     const handleSubmitChange = async () => {
         try {
             const res = await fetch("http://localhost:3000/change-schedule", {
-                method: "POST", // Usualmente los cambios se hacen con POST o PUT
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password })
             });
 
             if (res.ok) {
@@ -90,9 +76,12 @@ export function Card() {
                 await fetchSchedule(); 
             } else {
                 console.error("Error al cambiar el horario");
+                const errorData = await res.json();
+                setAdminError(errorData.message || "Error al cambiar el horario");
             }
         } catch (error) {
             console.error("Error de conexión al cambiar el horario:", error);
+            setAdminError("Error de conexión");
         }
     };
     const getCurrentSchedule = () => {
@@ -106,8 +95,9 @@ export function Card() {
     };
 
     const getShift = () => {
-        if (loading || schedule.length === 0) return "Cargando...";
+        if (loading) return "Cargando...";
         if (error) return "Error";
+        if (schedule.length === 0) return "Fin de jornada";
     
         const scheduleName = schedule[0]?.nombre_horario.toLowerCase();
         if (!scheduleName) return "Indefinida";
@@ -152,12 +142,23 @@ export function Card() {
             </div>
             <div className="w-full flex justify-center items-center flex-col px-2">
                 <p className="font-extrabold text-white text-center text-sm sm:text-base md:text-lg lg:text-[20px]">Cambiar Horario Manualmente</p>
-                <p className="text-white text-center text-xs sm:text-sm md:text-base">(Solo coordinadora)</p>
-                <select name="Horario" value={selectedSchedule} onChange={handleSelectChange} className="bg-black border-1 border-red-500 w-[110px] sm:w-[120px] md:w-[130px] p-1.5 sm:p-2 text-white font-extrabold focus:outline-none text-sm sm:text-base md:text-lg lg:text-[20px] rounded-lg cursor-pointer">
-                    <option value="Normal">Normal</option>
-                    <option value="Especial">Especial</option>
-                </select>
-                <button onClick={handleSubmitChange} className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-red-700 transition-colors text-sm sm:text-base">Cambiar Horario</button>
+                <p className="text-white text-center text-xs sm:text-sm md:text-base mb-2">(Solo coordinadora)</p>
+                
+                {showAdminOptions ? (
+                    <>
+                        <select name="Horario" value={selectedSchedule} onChange={handleSelectChange} className="bg-black border-1 border-red-500 w-[110px] sm:w-[120px] md:w-[130px] p-1.5 sm:p-2 text-white font-extrabold focus:outline-none text-sm sm:text-base md:text-lg lg:text-[20px] rounded-lg cursor-pointer">
+                            <option value="Normal">Normal</option>
+                            <option value="Especial">Especial</option>
+                        </select>
+                        <button onClick={handleSubmitChange} className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-red-700 transition-colors text-sm sm:text-base">Cambiar Horario</button>
+                    </>
+                ) : (
+                    <div className="flex flex-col items-center gap-2">
+                        <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-black border-1 border-red-500 p-2 text-white focus:outline-none rounded-lg text-center"/>
+                        <button onClick={handlePasswordSubmit} className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm sm:text-base">Acceder</button>
+                    </div>
+                )}
+                {adminError && <p className="text-yellow-400 text-sm mt-2">{adminError}</p>}
             </div>
         </div>
     )

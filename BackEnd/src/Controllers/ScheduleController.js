@@ -15,6 +15,12 @@ async function detectSchedule(req, res) {
 
 async function changeSchedule(req, res) {
     try {
+        const { password } = req.body;
+
+        if (password !== process.env.SCHEDULE_CHANGE_PASSWORD) {
+            return res.status(401).json({ message: 'Contraseña incorrecta' });
+        }
+
         const result = await updateScheduleBlock();
         if(result.affectedRows === 0) {
             return res.status(404).json({ message: 'No se encontró ningún horario para actualizar' });
