@@ -1,13 +1,14 @@
-import { Card } from "./components/Card";
-import './App.css'
+import { ViewHorarios } from "./components/ViewHorarios";
+import { AdminGetTipoJornada } from "./components/Admin";
 
 function App() {
 
   return (
-    <div className="bg-black w-full h-screen flex items-center justify-center">
-      <Card />
-    </div>
-  )
+    <>
+      <AdminGetTipoJornada />
+      <ViewHorarios />
+    </>
+  );
 }
 
-export default App
+export default App;
