@@ -1,10 +1,11 @@
 import { ViewHorarios } from "./components/ViewHorarios";
+import { AdminGetTipoJornada } from "./components/Admin";
 
 function App() {
 
   return (
     <>
-      {/* <AdminGetTipoJornada /> */}
+      <AdminGetTipoJornada />
       <ViewHorarios />
     </>
   );
